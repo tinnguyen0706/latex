@@ -1,0 +1,65 @@
+\documentclass[12pt]{article}
+
+\usepackage{style}
+
+% Disable indentation on new paragraphs
+% \setlength{\parindent}{0pt}
+
+% Optional: graphic path
+% \graphicspath{PATH_TO_GRAPHIC_FOLDER}
+
+% To use Times font family, uncomment this row
+% \usepackage{mathptmx}
+
+% To use roman section / subsection, uncomment these rows
+% \renewcommand{\thesection}{\Roman{section}}         
+% \renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}  
+% \renewcommand{\thesubsubsection}{\thesubsection.\alph{subsubsection}} 
+
+% Define course name, report name and report title.
+\newcommand{\coursename}{Tên môn học}
+\newcommand{\reportname}{Tên báo cáo}
+\newcommand{\reporttitle}{Tiêu đề báo cáo}
+
+\newcommand{\studentname}{23127498 - Nguyễn Trọng Tín}
+\newcommand{\teachername}{Trần Thị Thảo Nhi}
+\newcommand{\academicyears}{2024-2025}
+
+% Header
+\lhead{\reporttitle}
+\rhead{
+Trường Đại học Khoa học Tự nhiên - ĐHQG HCM\\
+\coursename
+}
+
+% Footer
+% \newcommand{\leftfooter}{\LaTeX\ by \href{https://github.com/trhgquan}{Quan, Tran Hoang}}
+% \lfoot{\leftfooter}
+
+% ============ DOCUMENT ============
+\begin{document}
+
+\input{content/title.tex}
+
+\thispagestyle{empty}
+\tableofcontents
+\pagebreak
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% Main content
+\input{content/section}
+\input{content/hinhanh}
+\input{content/bangbieu}
+\input{content/congthuctoan}
+\input{content/thuattoan}
+\input{content/code}
+\input{content/ngonngu}
+\input{content/cite}
+
+% References
+\input{ref/acknowledgement}
+\input{ref/ref.tex}
+
+\end{document}

@@ -1,0 +1,32 @@
+{
+    "[latex]": {
+        "editor.formatOnPaste": false,
+        "editor.suggestSelection": "recentlyUsedByPrefix",
+        "editor.defaultFormatter": "nickfode.latex-formatter",
+        "editor.wordWrap": "on",
+    },
+    "workbench.editor.empty.hint": "hidden",
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "latexmk (biber)",
+            "tools": [
+                "latexmk"
+            ]
+        }
+    ],
+    "latex-workshop.latex.tools": [
+        {
+            "name": "latexmk",
+            "command": "latexmk",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-pdf",
+                "%DOC%",
+                "-output-directory=build"
+            ]
+        }
+    ],
+    "latex-workshop.latex.outDir": "%DIR%/build"
+}

@@ -1,0 +1,56 @@
+\section{Công thức toán}
+
+% --- INLINE MATH ---
+% Dùng \(...\) hoặc $...$ cho công thức trong dòng
+Inline: \( f(x) = x^2 + 2x + 1 \)\\
+\indent Hoặc: $f(x) = x^2 + 2x + 1$
+
+% --- DISPLAY MATH (không số) ---
+% Dùng \[...\] cho công thức nằm riêng, không đánh số
+\[
+    \text{ReLU}(x) = \max(0, x)
+\]
+
+% --- HỆ PHƯƠNG TRÌNH DÙNG ALIGNED ---
+% equation + aligned để vừa căn chỉnh vừa có số thứ tự
+\begin{equation}
+    \begin{aligned}
+        a_1x_1 + a_2x_2 + \dots + a_nx_n & = u \\
+        b_1x_1 + b_2x_2 + \dots + b_nx_n & = v \\
+        c_1x_1 + c_2x_2 + \dots + c_nx_n & = w
+    \end{aligned}
+\end{equation}
+
+% --- PHƯƠNG TRÌNH DÀI ---
+% dmath tự động xuống dòng (cần gói breqn)
+\begin{dmath}
+    y = a_1x_1 + a_2x_2 + a_3x_3 + a_4x_4 + a_5x_5 + a_6x_6
+      + a_7x_7 + a_8x_8 + a_9x_9 + a_{10}x_{10} + a_{11}x_{11}
+      + a_{12}x_{12} + a_{13}x_{13} + a_{14}x_{14} + a_{15}x_{15}
+\end{dmath}
+
+% --- HÀM NHIỀU ĐIỀU KIỆN ---
+\begin{equation}
+    f(x) =
+    \begin{cases}
+        x^2, & x \ge 0 \\
+        -x,  & x < 0
+    \end{cases}
+\end{equation}
+
+% --- NHIỀU PHƯƠNG TRÌNH ĐỘC LẬP ---
+% align giúp căn dấu "=" thẳng hàng
+\begin{align}
+    a & = b + c \\
+    x & = y + z
+\end{align}
+
+% --- HỆ PHƯƠNG TRÌNH DẠNG NGOẶC NHỌN ---
+\begin{equation}
+    \left\{
+    \begin{aligned}
+        a_1x + b_1y & = c_1 \\
+        a_2x + b_2y & = c_2
+    \end{aligned}
+    \right.
+\end{equation}

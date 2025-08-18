@@ -1,0 +1,39 @@
+\begin{titlepage}
+	\begin{center}
+		\LARGE \textbf{ĐẠI HỌC QUỐC GIA TP.HCM}\\[0.5cm]
+		\Large \textbf{TRƯỜNG ĐẠI HỌC KHOA HỌC TỰ NHIÊN}\\[0.5cm]
+		\large KHOA CÔNG NGHỆ THÔNG TIN\\[1cm]
+	
+		\includegraphics[scale=.15]{img/hcmus-logo.png}
+	
+		\vspace{1cm}
+		\huge \textbf{\reporttitle}\\[0.5cm]
+		\large \textbf{\reportname}\\[1cm]
+	\end{center}
+
+	\raggedright
+	\hspace{1cm}
+	\begin{minipage}[t]{0.4\textwidth}
+		\raggedright\large
+		\emph{Giáo viên hướng dẫn:}\\
+		\teachername
+	\end{minipage}
+
+	\raggedleft
+	\begin{minipage}[t]{0.4\textwidth}
+		\raggedleft\large
+		\emph{Sinh viên thực hiện:}\\
+		\studentname
+	\end{minipage}
+	\hspace{1cm}
+
+	\begin{tikzpicture}[remember picture, overlay]
+		\draw[line width = 2pt] ($(current page.north west) + (2cm,-2cm)$) rectangle ($(current page.south east) + (-1.5cm,2cm)$);
+	\end{tikzpicture}
+
+	\vfill
+
+	\begin{center}
+		{\large \today}
+	\end{center}
+\end{titlepage}
