@@ -4,9 +4,11 @@
 *.dvi
 *.log
 *.out
-*.pdf
 *.toc
 *.fls
 *.fdb_latexmk
 *.synctex.gz
-*.xml
+*.run.xml
+*.bbl-SAVE-ERROR
+*.bcf
+*.synctex.gz
