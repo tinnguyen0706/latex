@@ -10,7 +10,8 @@
         {
             "name": "latexmk (biber)",
             "tools": [
-                "latexmk"
+                "latexmk",
+                "latexmk-clean"
             ]
         }
     ],
@@ -19,12 +20,20 @@
             "name": "latexmk",
             "command": "latexmk",
             "args": [
-                "-synctex=1",
                 "-interaction=nonstopmode",
                 "-file-line-error",
-                "-pdf",
+                "-xelatex",
                 "%DOC%",
                 "-output-directory=build"
+            ]
+        },
+        {
+            "name": "latexmk-clean",
+            "command": "latexmk",
+            "args": [
+                "-c",
+                "-outdir=build",
+                "%DOC%"
             ]
         }
     ],

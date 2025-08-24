@@ -18,7 +18,7 @@
 
 
 \refsection{0}
-  \datalist[entry]{nty/global//global/global/global}
+  \datalist[entry]{none/global//global/global/global}
     \entry{ref1}{book}{}{}
       \name{author}{1}{}{%
         {{hash=3edfdf614d0af892095a184ac384a503}{%
@@ -38,14 +38,13 @@
       \strng{authornamehash}{3edfdf614d0af892095a184ac384a503}
       \strng{authorfullhash}{3edfdf614d0af892095a184ac384a503}
       \strng{authorfullhashraw}{3edfdf614d0af892095a184ac384a503}
-      \field{sortinit}{A}
-      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{chapter}{5}
       \field{title}{Tên sách}
       \field{year}{2022}
-      \true{nocite}
     \endentry
     \entry{ref2}{inproceedings}{}{}
       \name{author}{1}{}{%
@@ -63,14 +62,13 @@
       \strng{authornamehash}{df7f042f26cfe0b0c1926cf090a0f5f3}
       \strng{authorfullhash}{df7f042f26cfe0b0c1926cf090a0f5f3}
       \strng{authorfullhashraw}{df7f042f26cfe0b0c1926cf090a0f5f3}
-      \field{sortinit}{B}
-      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{booktitle}{Tên hội nghị/tạp chí}
       \field{title}{Tên bài báo}
       \field{year}{2023}
-      \true{nocite}
     \endentry
     \entry{ref3}{online}{}{}
       \name{author}{1}{}{%
@@ -88,8 +86,8 @@
       \strng{authornamehash}{08a57bc749a33a73a5aacb9a44f0c8d0}
       \strng{authorfullhash}{08a57bc749a33a73a5aacb9a44f0c8d0}
       \strng{authorfullhashraw}{08a57bc749a33a73a5aacb9a44f0c8d0}
-      \field{sortinit}{C}
-      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{Tên bài viết}
@@ -97,7 +95,6 @@
       \field{urlmonth}{8}
       \field{urlyear}{2025}
       \field{urldateera}{ce}
-      \true{nocite}
       \verb{urlraw}
       \verb https://example.com/bai-viet
       \endverb
@@ -121,8 +118,8 @@
       \strng{authornamehash}{38d4a8af066cc9dc9e0c879e9d252e33}
       \strng{authorfullhash}{38d4a8af066cc9dc9e0c879e9d252e33}
       \strng{authorfullhashraw}{38d4a8af066cc9dc9e0c879e9d252e33}
-      \field{sortinit}{g}
-      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{Tên slide}

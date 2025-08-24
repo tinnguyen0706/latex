@@ -1,20 +1,9 @@
-\documentclass[12pt]{article}
+\documentclass[14pt, a4paper]{extarticle}
 
 \usepackage{style}
 
 % Disable indentation on new paragraphs
 % \setlength{\parindent}{0pt}
-
-% Optional: graphic path
-% \graphicspath{PATH_TO_GRAPHIC_FOLDER}
-
-% To use Times font family, uncomment this row
-% \usepackage{mathptmx}
-
-% To use roman section / subsection, uncomment these rows
-% \renewcommand{\thesection}{\Roman{section}}         
-% \renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}  
-% \renewcommand{\thesubsubsection}{\thesubsection.\alph{subsubsection}} 
 
 % Define course name, report name and report title.
 \newcommand{\coursename}{Tên môn học}
@@ -26,11 +15,8 @@
 \newcommand{\academicyears}{2024-2025}
 
 % Header
-\lhead{\reporttitle}
-\rhead{
-Trường Đại học Khoa học Tự nhiên - ĐHQG HCM\\
-\coursename
-}
+\lhead{\small \reporttitle}
+\rhead{\small \coursename}
 
 % Footer
 % \newcommand{\leftfooter}{\LaTeX\ by \href{https://github.com/trhgquan}{Quan, Tran Hoang}}
@@ -39,9 +25,9 @@ Trường Đại học Khoa học Tự nhiên - ĐHQG HCM\\
 % ============ DOCUMENT ============
 \begin{document}
 
-\input{content/title.tex}
+\input{title/title_hcmus}
 
-\thispagestyle{empty}
+\pagenumbering{roman}
 \tableofcontents
 \pagebreak
 
@@ -53,10 +39,10 @@ Trường Đại học Khoa học Tự nhiên - ĐHQG HCM\\
 \input{content/hinhanh}
 \input{content/bangbieu}
 \input{content/congthuctoan}
-\input{content/thuattoan}
 \input{content/code}
 \input{content/ngonngu}
 \input{content/cite}
+\input{content/mytam}
 
 % References
 \input{ref/acknowledgement}
