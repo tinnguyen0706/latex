@@ -1,6 +1,8 @@
 % =========================
 % NGÔN NGỮ VÀ FONT
 % =========================
+\usepackage{anyfontsize}
+\usepackage[fontsize=13pt]{scrextend}
 \usepackage{fontspec}
 \setmainfont{Times New Roman}
 
@@ -21,13 +23,14 @@
 \usepackage{setspace}
 \onehalfspacing
 
+\usepackage[protrusion=true]{microtype}
+\sloppy
+
 \usepackage[
   top=30mm,
   bottom=25mm,
-  left=30mm,
-  right=20mm,
-  footskip=15mm,
-  includefoot
+  left=20mm,
+  right=20mm
 ]{geometry} % Lề trang
 
 \usepackage{float}      % Kiểm soát vị trí hình/bảng (H)
@@ -35,10 +38,10 @@
 \usepackage{indentfirst} % Thụt đầu dòng cho đoạn đầu tiên
 
 % Header/Footer
-\setlength{\headheight}{15.0434pt}
+\setlength{\headheight}{16.2645pt}
 \pagestyle{fancy}
 \fancyfoot{}
-\fancyfoot[R]{\small Trang \thepage}
+\fancyfoot[R]{Trang \thepage}
 
 % =========================
 % ĐỒ HỌA VÀ BẢNG
@@ -48,7 +51,16 @@
 \usetikzlibrary{calc}
 \newcommand\HRule{\rule{\textwidth}{1pt}}
 
-\usepackage{tabularx} % cột co giãn X
+\usepackage{array}      % cần cho m{width}
+\usepackage{tabularx}   % cần cho X column
+
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+\newcolumntype{\XL}{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}X}
+\newcolumntype{\XC}{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}X}
+\newcolumntype{\XR}{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}X}
 
 % =========================
 % SIÊU LIÊN KẾT VÀ URL
@@ -61,7 +73,6 @@
   urlcolor=blue,
   filecolor=blue
 ]{hyperref}
-\usepackage{url}
 
 % =========================
 % TOÁN HỌC
@@ -77,7 +88,8 @@
   backend=biber,
   style=numeric,
   citestyle=numeric-comp,
-  sorting=none
+  sorting=nty,
+  defernumbers=true
 ]{biblatex}
 
 \addbibresource{ref/ref.bib} % file .bib
@@ -92,7 +104,6 @@
 \makeatother
 
 \DefineBibliographyStrings{english}{
-  references    = {Tài liệu tham khảo},
   chapter       = {Chương},
   urlseen       = {Ngày truy cập},
   editor        = {Biên tập},

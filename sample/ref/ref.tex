@@ -1,4 +1,11 @@
-% \nocite{*} % Hiện tất cả tài liệu kể cả chưa cite
+\nocite{*} % Hiện tất cả tài liệu kể cả chưa cite
 \cleardoublepage
 \phantomsection
-\printbibliography[heading=bibintoc]
+\printbibheading[title={Tài liệu tham khảo}]
+
+\printbibliography[heading=subbibliography, title={Tiếng Việt}, keyword=Viet]
+
+\DeclareNameAlias{sortname}{family-given}
+\DeclareNameAlias{default}{family-given}
+
+\printbibliography[heading=subbibliography, title={Tiếng Anh}, notkeyword=Viet]

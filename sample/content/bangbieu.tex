@@ -35,16 +35,17 @@ Môi trường này cho phép bạn định nghĩa các cột có độ rộng c
 Có thể dùng \texttt{\textbackslash raggedleft}, \texttt{\textbackslash raggedright} và \texttt{\textbackslash centering} để canh lề nội dung trong các ô.
 
 \begin{table}[H]
-	\centering
-	\begin{tabularx}{\textwidth}{|l|X|r|} % sửa l/r/X/| theo số cột
-		\hline
-		\textbf{STT} & \textbf{Nội dung}                                                 & \textbf{Số lượng} \\
-		\hline
-		1            & Đây là nội dung rất dài, LaTeX sẽ tự xuống dòng trong ô nhờ cột X & 10                \\
-		\hline
-		2            & \centering Nội dung thứ 2, có thể dài nhiều dòng                             & 5                 \\
-		\hline
-	\end{tabularx}
-	\caption{Tên bảng ở đây}
-	\label{tab:my_label_with_tabularx}
+    \centering
+    \begin{tabularx}{\textwidth}{|c|\XC|c|}
+        \hline
+        \textbf{STT} & \textbf{Nội dung}                                                 & \textbf{Số lượng} \\
+        \hline
+        1            & Đây là nội dung rất rất rất rất dài, LaTeX sẽ tự xuống dòng trong ô nhờ cột X & 10                \\
+        \hline
+        2            & Nội dung thứ 2, có thể dài nhiều dòng                              & 5                 \\
+        \hline
+    \end{tabularx}
+    \caption{Tên bảng ở đây}
+    \label{tab:my_label_with_tabularx}
 \end{table}
+~\cite{ref1}
