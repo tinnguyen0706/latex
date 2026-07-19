@@ -8,7 +8,7 @@
     },
     "workbench.editor.empty.hint": "hidden",
     "latex-workshop.docker.enabled": true,
-    "latex-workshop.docker.image.latex": "latex-times-new-roman:latest",
+    "latex-workshop.docker.image.latex": "ghcr.io/tinnguyen0706/latex-times-new-roman:latest",
     "latex-workshop.latex.recipes": [
         {
             "name": "XeLaTeX via Docker",

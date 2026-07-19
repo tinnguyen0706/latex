@@ -4,7 +4,8 @@ Template viết báo cáo LaTeX tiếng Việt bằng XeLaTeX và font Times New
 Toàn bộ TeX Live được đóng gói trong Docker, vì vậy máy host không cần cài
 TeX Live, XeLaTeX hoặc `latexmk`.
 
-- **Build PDF:** chạy XeLaTeX trong image `latex-times-new-roman:latest`.
+- **Build PDF:** chạy XeLaTeX trong image private
+  `ghcr.io/tinnguyen0706/latex-times-new-roman:latest`.
 - **Format mã nguồn:** chạy `tex-fmt` trực tiếp trên máy host.
 - **Editor đề xuất:** Visual Studio Code với extension LaTeX Workshop.
 - **PDF mẫu:** `sample/build/main.pdf`.
@@ -118,19 +119,17 @@ Có thể dùng package `tex-fmt` từ AUR thay cho `tex-fmt-bin`; bản `-bin` 
 
 ## 2. Lấy source code
 
-Thay `<repository-url>` bằng URL Git của repository này.
-
 ### Windows (PowerShell)
 
 ```powershell
-git clone <repository-url>
+git clone https://github.com/tinnguyen0706/latex.git
 cd latex
 ```
 
 ### Linux (Arch-based)
 
 ```sh
-git clone <repository-url>
+git clone https://github.com/tinnguyen0706/latex.git
 cd latex
 ```
 
@@ -138,6 +137,10 @@ Tất cả các lệnh còn lại phải được chạy từ thư mục gốc `
 chú khác.
 
 ## 3. Chuẩn bị Times New Roman
+
+Nếu chỉ sử dụng image có sẵn trên GHCR, bạn có thể bỏ qua mục này: font đã được
+đóng gói trong image private. Mục này dành cho maintainer muốn build lại image
+trên máy cá nhân.
 
 Docker image yêu cầu đúng bốn file sau trong thư mục `fonts/`:
 
@@ -179,7 +182,30 @@ file fonts/times.ttf fonts/timesbd.ttf fonts/timesi.ttf fonts/timesbi.ttf
 Việc cài font vào hệ điều hành Linux là không cần thiết vì Dockerfile copy font
 trực tiếp vào image.
 
-## 4. Build Docker image
+Các file `.ttf` thô được giữ local và bị Git ignore. GitHub Actions lấy font từ
+archive GPG đã mã hóa; repository chỉ lưu passphrase trong GitHub Secret.
+
+## 4. Lấy Docker image
+
+Image chứa Times New Roman nên được lưu private. Tạo một GitHub Personal Access
+Token (classic) có scope `read:packages`, rồi đăng nhập; khi Docker hỏi password,
+hãy paste token thay cho mật khẩu GitHub:
+
+```sh
+docker login ghcr.io -u tinnguyen0706
+docker pull ghcr.io/tinnguyen0706/latex-times-new-roman:latest
+```
+
+Kiểm tra image:
+
+```sh
+docker image inspect ghcr.io/tinnguyen0706/latex-times-new-roman:latest
+```
+
+Lệnh trên dùng được trong cả PowerShell và shell trên Linux. Không lưu token
+vào repository hoặc nhập token trực tiếp trong tham số dòng lệnh.
+
+### Build image local (dành cho maintainer)
 
 Image chỉ cần build lần đầu, hoặc build lại khi `Dockerfile` hay font thay đổi.
 Format và build tài liệu hằng ngày không rebuild image.
@@ -204,7 +230,7 @@ docker build \
   -t latex-times-new-roman:latest .
 ```
 
-Kiểm tra image đã tồn tại:
+Kiểm tra image local đã tồn tại:
 
 ```sh
 docker image inspect latex-times-new-roman:latest
@@ -233,7 +259,9 @@ có sẵn `.vscode/settings.json` với các hành vi sau:
 - file build được ghi vào thư mục `build/` cạnh file TeX gốc;
 - auto-build bị tắt để tránh build container sau mỗi lần lưu.
 
-Không cần cài TeX Live hoặc LaTeX Workshop formatter khác trên host.
+LaTeX Workshop dùng image private trên GHCR. Vì vậy phải chạy `docker login` và
+`docker pull` ở mục 4 trước khi build. Không cần cài TeX Live hoặc LaTeX Workshop
+formatter khác trên host.
 
 ## 6. Build và xem tài liệu
 
@@ -255,7 +283,7 @@ sample/build/main.pdf
 docker run --rm `
   --volume "${PWD}:/workspace" `
   --workdir /workspace/sample `
-  latex-times-new-roman:latest `
+  ghcr.io/tinnguyen0706/latex-times-new-roman:latest `
   latexmk -xelatex -interaction=nonstopmode -file-line-error -outdir=build main.tex
 ```
 
@@ -265,7 +293,7 @@ docker run --rm `
 docker run --rm \
   --volume "$PWD:/workspace" \
   --workdir /workspace/sample \
-  latex-times-new-roman:latest \
+  ghcr.io/tinnguyen0706/latex-times-new-roman:latest \
   latexmk -xelatex -interaction=nonstopmode -file-line-error \
     -outdir=build main.tex
 ```
@@ -309,7 +337,7 @@ ignore. PDF trong thư mục `build/` vẫn được phép track bằng Git.
 docker run --rm `
   --volume "${PWD}:/workspace" `
   --workdir /workspace/sample `
-  latex-times-new-roman:latest `
+  ghcr.io/tinnguyen0706/latex-times-new-roman:latest `
   latexmk -c -outdir=build main.tex
 ```
 
@@ -319,11 +347,36 @@ docker run --rm `
 docker run --rm \
   --volume "$PWD:/workspace" \
   --workdir /workspace/sample \
-  latex-times-new-roman:latest \
+  ghcr.io/tinnguyen0706/latex-times-new-roman:latest \
   latexmk -c -outdir=build main.tex
 ```
 
-## 9. Xử lý lỗi thường gặp
+## 9. Publish image lên GHCR
+
+Workflow `.github/workflows/publish-image.yml` build image `linux/amd64`, kiểm
+tra font bằng Dockerfile và push lên GHCR bằng `GITHUB_TOKEN`.
+
+### Thiết lập lần đầu
+
+Repository cần secret `FONT_ARCHIVE_PASSPHRASE` dùng để giải mã
+`fonts/times-new-roman.tar.gz.gpg`. Không in secret hoặc nội dung font ra log.
+Sau lần publish đầu tiên, mở package settings trên GitHub và xác nhận visibility
+vẫn là **Private**.
+
+### Publish một phiên bản
+
+Tag Git theo semantic version rồi push tag:
+
+```sh
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+Tag `v1.0.0` tạo các image tag `1.0.0`, `1.0` và `latest`. Có thể vào tab
+**Actions**, chọn workflow **Publish LaTeX image**, rồi chọn **Run workflow** để
+publish thủ công một tag hợp lệ.
+
+## 10. Xử lý lỗi thường gặp
 
 ### `Please set your LaTeX formatter in latex-workshop.formatting.latex`
 
@@ -354,15 +407,23 @@ rồi đăng xuất và đăng nhập lại.
 ### Docker build báo font không hợp lệ
 
 Kiểm tra lại đủ bốn file và đúng tên. Font phải là Times New Roman thật; file
-rỗng, file hỏng hoặc font khác được đổi tên đều bị Dockerfile từ chối.
+rỗng, file hỏng hoặc font khác được đổi tên đều bị Dockerfile từ chối. Nếu lỗi
+xảy ra trong GitHub Actions, kiểm tra secret `FONT_ARCHIVE_PASSPHRASE` khớp với
+archive mã hóa.
 
-### Build không dùng image mới
+### `unauthorized` hoặc `denied` khi pull GHCR
 
-Build lại image với đúng tag mà LaTeX Workshop đang dùng:
+Chạy lại `docker login ghcr.io -u tinnguyen0706` và dùng PAT classic có scope
+`read:packages`. Tài khoản GitHub đó cũng phải có quyền đọc package private.
+
+### Build không dùng image GHCR mới
+
+Pull lại tag mà LaTeX Workshop đang dùng:
 
 ```sh
-docker build -t latex-times-new-roman:latest .
+docker pull ghcr.io/tinnguyen0706/latex-times-new-roman:latest
 ```
 
-Trên Linux nên dùng lại lệnh đầy đủ ở mục **Build Docker image** để giữ đúng
-UID/GID.
+Nếu đang phát triển Dockerfile local, dùng lại lệnh đầy đủ ở mục
+**Build image local** và tạm đổi image trong `.vscode/settings.json` về
+`latex-times-new-roman:latest`.

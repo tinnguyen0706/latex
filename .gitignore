@@ -16,3 +16,6 @@
 # Ignore LaTeX build artifacts, but keep generated PDFs trackable.
 **/build/*
 !**/build/*.pdf
+
+# Times New Roman is proprietary. Keep raw fonts local; CI uses the encrypted archive.
+fonts/*.ttf
