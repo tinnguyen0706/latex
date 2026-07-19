@@ -12,3 +12,7 @@
 *.bbl-SAVE-ERROR
 *.bcf
 *.synctex.gz
+
+# Ignore LaTeX build artifacts, but keep generated PDFs trackable.
+**/build/*
+!**/build/*.pdf
