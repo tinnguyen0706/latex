@@ -8,20 +8,23 @@
 % Define course name, report name and report title.
 \newcommand{\coursename}{Tên môn học}
 \newcommand{\reportname}{Tên báo cáo}
-\newcommand{\reporttitle}{Tiêu đề báo cáo}
+\newcommand{\reporttitle}{Thiết kế hệ thống hỗ trợ đặt lịch, gửi yêu cầu và theo dõi quá trình quá trình chăm sóc thú cưng}
+% Dùng tiêu đề rút gọn khi \reporttitle dài quá hai dòng trên header.
+\newcommand{\headertitle}{\reporttitle}
 
-\newcommand{\studentname}{23127498 - Nguyễn Trọng Tín}
-\newcommand{\teachername}{Nguyễn Văn hướng dẫn}
-\newcommand{\academicyears}{2024-2025}
+\newcommand{\studentname}{23127498 - Nguyễn Trọng Tín \\ 23127499 - Nguyễn Trọng Tín \\ 23127500 - Nguyễn Trọng Tín}
+\newcommand{\teachername}{Nguyễn Văn hướng dẫn bởi Thầy/Cô: Nguyễn Văn A - Trưởng bộ môn: Nguyễn Văn B - Khoa: Nguyễn Văn C}
 
 % Header
-\lhead{\reporttitle}
-\rhead{\coursename}
+\lhead{\parbox[b]{0.62\textwidth}{%
+\setstretch{1}\raggedright\headertitle}}
+\rhead{\parbox[b]{0.28\textwidth}{%
+\setstretch{1}\raggedleft\coursename}}
 
 % Footer
 % \newcommand{\leftfooter}{\LaTeX\ by \href{https://github.com/trhgquan}{Quan, Tran Hoang}}
 % \lfoot{\leftfooter}
-  
+
 % ============ DOCUMENT ============
 \begin{document}
 

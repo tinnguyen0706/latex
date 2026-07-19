@@ -37,6 +37,7 @@
 \sloppy
 
 \usepackage[
+  a4paper,
   top=30mm,
   bottom=25mm,
   left=20mm,
@@ -48,7 +49,8 @@
 \usepackage{indentfirst} % Thụt đầu dòng cho đoạn đầu tiên
 
 % Header/Footer
-\setlength{\headheight}{16.2645pt}
+% Đủ chỗ cho header tối đa hai dòng ở cỡ chữ mặc định.
+\setlength{\headheight}{32pt}
 \pagestyle{fancy}
 \fancyfoot{}
 \fancyfoot[R]{Trang \thepage}
@@ -57,6 +59,7 @@
 % ĐỒ HỌA VÀ BẢNG
 % =========================
 \usepackage{graphicx}
+\usepackage{adjustbox}
 \usepackage{tikz}
 \usetikzlibrary{calc}
 \newcommand\HRule{\rule{\textwidth}{1pt}}

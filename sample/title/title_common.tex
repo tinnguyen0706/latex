@@ -1,0 +1,90 @@
+% Shared modern academic cover used by the HCMUS and UIT variants.
+% Arguments: university, school, faculty, logo path, logo height, accent color.
+\providecommand{\makeuniversitycover}[6]{%
+  \begin{titlepage}
+    \thispagestyle{empty}
+
+    \begin{tikzpicture}[remember picture, overlay]
+      \fill[#6]
+        (current page.north west)
+        rectangle ([xshift=8mm]current page.south west);
+      \fill[#6!7]
+        ([xshift=8mm]current page.north west)
+        rectangle ([xshift=12mm]current page.south west);
+      \fill[#6]
+        ([xshift=20mm,yshift=-17mm]current page.north west)
+        rectangle ([xshift=-20mm,yshift=-19mm]current page.north east);
+    \end{tikzpicture}
+
+    \centering
+    \vspace*{-8mm}
+
+    {\fontsize{14}{17}\selectfont\bfseries #1\par}
+    \vspace{2mm}
+    {\fontsize{15}{18}\selectfont\bfseries #2\par}
+    \vspace{2mm}
+    {\fontsize{12}{15}\selectfont\color{#6} #3\par}
+
+    \vspace{9mm}
+    \includegraphics[height=#5]{#4}
+
+    \vspace{8mm}
+    {\color{#6}\rule{0.72\textwidth}{1.2pt}\par}
+    \vspace{5mm}
+
+    {\fontsize{13}{16}\selectfont\bfseries\color{#6}
+      \MakeUppercase{\reportname}\par}
+    \vspace{4mm}
+    \begin{adjustbox}{max width=0.84\textwidth,
+                      max totalheight=24mm,center}
+      \begin{minipage}{0.84\textwidth}
+        \centering
+        \fontsize{23}{28}\selectfont\bfseries
+        \reporttitle\par
+      \end{minipage}
+    \end{adjustbox}\par
+    \vspace{5mm}
+    {\fontsize{14}{17}\selectfont\coursename\par}
+
+    \vspace{11mm}
+    \begingroup
+      \setlength{\fboxsep}{6mm}
+      \colorbox{#6!7}{%
+        \begin{minipage}{\dimexpr0.78\textwidth-12mm\relax}
+          \begin{minipage}[t]{0.34\linewidth}
+            \vspace{0pt}
+            {\fontsize{11.5}{14}\selectfont\bfseries\color{#6}
+              Giảng viên hướng dẫn\par}
+          \end{minipage}%
+          \hfill
+          \begin{minipage}[t]{0.60\linewidth}
+            \vspace{0pt}
+            {\fontsize{13}{16}\selectfont\raggedright
+              \teachername\par}
+          \end{minipage}
+
+          \vspace{3mm}
+          {\color{#6!35}\rule{\linewidth}{0.45pt}\par}
+          \vspace{3mm}
+
+          \begin{minipage}[t]{0.34\linewidth}
+            \vspace{0pt}
+            {\fontsize{11.5}{14}\selectfont\bfseries\color{#6}
+              Sinh viên thực hiện\par}
+          \end{minipage}%
+          \hfill
+          \begin{minipage}[t]{0.60\linewidth}
+            \vspace{0pt}
+            {\fontsize{13}{16}\selectfont\raggedright
+              \studentname\par}
+          \end{minipage}
+        \end{minipage}%
+      }
+    \endgroup
+
+    \vfill
+    {\color{#6}\rule{28mm}{0.8pt}\par}
+    \vspace{3mm}
+    {\fontsize{12}{15}\selectfont TP. Hồ Chí Minh, \today\par}
+  \end{titlepage}%
+}
