@@ -1,38 +1,53 @@
 # LaTeX report template
 
-Template viết báo cáo LaTeX tiếng Việt bằng XeLaTeX và font Times New Roman.
-Toàn bộ TeX Live được đóng gói trong Docker, vì vậy máy host không cần cài
-TeX Live, XeLaTeX hoặc `latexmk`.
+Project dùng XeLaTeX và Times New Roman để viết báo cáo LaTeX tiếng Việt.
+TeX Live, XeLaTeX và `latexmk` nằm trong Docker image private; máy host chỉ cần
+Docker, Visual Studio Code, LaTeX Workshop và formatter `tex-fmt`.
 
-- **Build PDF:** chạy XeLaTeX trong image private
-  `ghcr.io/tinnguyen0706/latex-times-new-roman:latest`.
-- **Format mã nguồn:** chạy `tex-fmt` trực tiếp trên máy host.
-- **Editor đề xuất:** Visual Studio Code với extension LaTeX Workshop.
-- **PDF mẫu:** `sample/build/main.pdf`.
+```text
+Source: https://github.com/tinnguyen0706/latex
+Image:  ghcr.io/tinnguyen0706/latex-times-new-roman:latest
+PDF:    sample/build/main.pdf
+```
 
-## 1. Cài công cụ cần thiết
+> Repository và Docker image đều private. Tài khoản GitHub của bạn phải được
+> cấp quyền truy cập trước khi clone hoặc pull image.
+
+## Thứ tự cài đặt
+
+1. Cài Git, GitHub CLI, VS Code, Docker và `tex-fmt`.
+2. Đăng nhập GitHub và clone source code.
+3. Đăng nhập GHCR và pull Docker image.
+4. Cài LaTeX Workshop, mở project và reload VS Code.
+5. Mở `sample/main.tex` rồi build PDF.
+
+Không cần cài TeX Live, MiKTeX, XeLaTeX hoặc `latexmk` trực tiếp trên máy.
+
+## 1. Cài công cụ
 
 ### Windows 10/11
 
-#### 1.1. Cài Git và Visual Studio Code
+#### Git, GitHub CLI và Visual Studio Code
 
 Mở PowerShell:
 
 ```powershell
 winget install --id Git.Git -e
+winget install --id GitHub.cli -e
 winget install --id Microsoft.VisualStudioCode -e
 ```
 
-Đóng rồi mở lại PowerShell, sau đó kiểm tra:
+Đóng rồi mở lại PowerShell và kiểm tra:
 
 ```powershell
 git --version
+gh --version
 code --version
 ```
 
-#### 1.2. Cài Docker Desktop
+#### Docker Desktop
 
-1. Cài hoặc cập nhật WSL 2 trong PowerShell chạy với quyền Administrator:
+1. Mở PowerShell bằng quyền Administrator và cài/cập nhật WSL 2:
 
    ```powershell
    wsl --install
@@ -40,7 +55,7 @@ code --version
    ```
 
 2. Cài [Docker Desktop for Windows](https://docs.docker.com/desktop/setup/install/windows-install/).
-3. Khi cài đặt, sử dụng backend WSL 2 và Linux containers.
+3. Dùng backend WSL 2 và Linux containers.
 4. Khởi động Docker Desktop, chờ Docker Engine sẵn sàng rồi kiểm tra:
 
    ```powershell
@@ -48,9 +63,10 @@ code --version
    docker run --rm hello-world
    ```
 
-#### 1.3. Cài formatter `tex-fmt`
+#### Formatter `tex-fmt`
 
-Cài binary Windows 64-bit được upstream phát hành qua CTAN:
+Project dùng `tex-fmt` trên host để format khi lưu file. Cài binary Windows
+64-bit bằng PowerShell:
 
 ```powershell
 $TexFmtDir = "$env:LOCALAPPDATA\Programs\tex-fmt"
@@ -62,232 +78,149 @@ Expand-Archive -Force "$env:TEMP\tex-fmt.zip" $TexFmtDir
 
 $UserPath = [Environment]::GetEnvironmentVariable("Path", "User")
 if ($UserPath -notlike "*$TexFmtDir*") {
-  [Environment]::SetEnvironmentVariable(
-    "Path",
-    "$UserPath;$TexFmtDir",
-    "User"
-  )
+  [Environment]::SetEnvironmentVariable("Path", "$UserPath;$TexFmtDir", "User")
 }
 ```
 
-Đóng rồi mở lại PowerShell, sau đó kiểm tra:
+Đóng rồi mở lại PowerShell:
 
 ```powershell
 tex-fmt --version
 ```
 
-Nếu VS Code không tìm thấy `tex-fmt`, khởi động lại VS Code sau khi cài. File
-thực thi nằm trong `%LOCALAPPDATA%\Programs\tex-fmt`.
-
 ### Linux (Arch-based)
 
-Các lệnh dưới đây giả định máy đã có một AUR helper là `paru`.
-
-#### 1.1. Cài Git, Docker và Visual Studio Code
+Các lệnh dưới đây dùng AUR helper `paru`:
 
 ```sh
 sudo pacman -Syu
-sudo pacman -S --needed git docker docker-buildx
-paru -S --needed visual-studio-code-bin
+sudo pacman -S --needed git github-cli docker docker-buildx
+paru -S --needed visual-studio-code-bin tex-fmt-bin
 ```
 
-Bật Docker daemon và cho phép user hiện tại dùng Docker:
+Bật Docker và cho phép user hiện tại sử dụng Docker:
 
 ```sh
 sudo systemctl enable --now docker
 sudo usermod -aG docker "$USER"
 ```
 
-Đăng xuất rồi đăng nhập lại để quyền group có hiệu lực, sau đó kiểm tra:
+Đăng xuất rồi đăng nhập lại để quyền group có hiệu lực. Sau đó kiểm tra:
 
 ```sh
+git --version
+gh --version
+code --version
+tex-fmt --version
 docker version
 docker run --rm hello-world
-git --version
-code --version
 ```
 
-#### 1.2. Cài formatter `tex-fmt`
+## 2. Đăng nhập GitHub và clone source code
+
+Các lệnh sau dùng được trong PowerShell và shell trên Linux:
 
 ```sh
-paru -S --needed tex-fmt-bin
-tex-fmt --version
-```
-
-Có thể dùng package `tex-fmt` từ AUR thay cho `tex-fmt-bin`; bản `-bin` được
-đề xuất vì không phải biên dịch Rust trên máy.
-
-## 2. Lấy source code
-
-### Windows (PowerShell)
-
-```powershell
-git clone https://github.com/tinnguyen0706/latex.git
+gh auth login --hostname github.com --git-protocol https --web --scopes "repo,read:packages"
+gh repo clone tinnguyen0706/latex
 cd latex
 ```
 
-### Linux (Arch-based)
+Khi đăng nhập, GitHub CLI sẽ hiển thị mã một lần và địa chỉ
+`https://github.com/login/device`. Mở địa chỉ đó, nhập mã và cấp quyền.
+
+Kiểm tra repository:
 
 ```sh
-git clone https://github.com/tinnguyen0706/latex.git
-cd latex
+git remote -v
+git status
 ```
 
-Tất cả các lệnh còn lại phải được chạy từ thư mục gốc `latex/`, trừ khi có ghi
-chú khác.
+Tất cả lệnh tiếp theo được chạy từ thư mục gốc `latex/`.
 
-## 3. Chuẩn bị Times New Roman
+## 3. Đăng nhập GHCR và pull image
 
-Nếu chỉ sử dụng image có sẵn trên GHCR, bạn có thể bỏ qua mục này: font đã được
-đóng gói trong image private. Mục này dành cho maintainer muốn build lại image
-trên máy cá nhân.
-
-Docker image yêu cầu đúng bốn file sau trong thư mục `fonts/`:
-
-| File trong project | Kiểu chữ |
-| --- | --- |
-| `fonts/times.ttf` | Regular |
-| `fonts/timesbd.ttf` | Bold |
-| `fonts/timesi.ttf` | Italic |
-| `fonts/timesbi.ttf` | Bold Italic |
-
-Chỉ sử dụng font khi bạn có quyền sử dụng và phân phối. Không đổi tên một font
-khác thành các tên trên: Docker build dùng `fc-scan` để xác nhận từng file thực
-sự thuộc family `Times New Roman` và sẽ dừng nếu font không hợp lệ.
-
-### Windows
-
-Nếu Times New Roman đã được cài trong Windows, chạy tại thư mục gốc project:
-
-```powershell
-Copy-Item "$env:WINDIR\Fonts\times.ttf"   ".\fonts\times.ttf"
-Copy-Item "$env:WINDIR\Fonts\timesbd.ttf" ".\fonts\timesbd.ttf"
-Copy-Item "$env:WINDIR\Fonts\timesi.ttf"  ".\fonts\timesi.ttf"
-Copy-Item "$env:WINDIR\Fonts\timesbi.ttf" ".\fonts\timesbi.ttf"
-```
-
-Nếu Windows lưu font ở vị trí khác, tìm bốn file tương ứng rồi copy thủ công
-vào `fonts/` với đúng tên trong bảng.
-
-### Linux (Arch-based)
-
-Times New Roman thường không có sẵn trên Linux. Copy bốn file `.ttf` hợp lệ từ
-máy Windows hoặc nguồn mà bạn được cấp phép vào thư mục `fonts/`, sau đó kiểm
-tra:
+Image chứa Times New Roman nên được lưu private. Dùng token của GitHub CLI để
+đăng nhập Docker; thay `YOUR_GITHUB_USERNAME` bằng username GitHub của bạn:
 
 ```sh
-file fonts/times.ttf fonts/timesbd.ttf fonts/timesi.ttf fonts/timesbi.ttf
-```
-
-Việc cài font vào hệ điều hành Linux là không cần thiết vì Dockerfile copy font
-trực tiếp vào image.
-
-Các file `.ttf` thô được giữ local và bị Git ignore. GitHub Actions lấy font từ
-archive GPG đã mã hóa; repository chỉ lưu passphrase trong GitHub Secret.
-
-## 4. Lấy Docker image
-
-Image chứa Times New Roman nên được lưu private. Tạo một GitHub Personal Access
-Token (classic) có scope `read:packages`, rồi đăng nhập; khi Docker hỏi password,
-hãy paste token thay cho mật khẩu GitHub:
-
-```sh
-docker login ghcr.io -u tinnguyen0706
+gh auth token | docker login ghcr.io -u YOUR_GITHUB_USERNAME --password-stdin
 docker pull ghcr.io/tinnguyen0706/latex-times-new-roman:latest
 ```
 
-Kiểm tra image:
+Kiểm tra image và font:
 
 ```sh
 docker image inspect ghcr.io/tinnguyen0706/latex-times-new-roman:latest
+docker run --rm ghcr.io/tinnguyen0706/latex-times-new-roman:latest fc-match "Times New Roman" --format "%{family[0]}\n"
 ```
 
-Lệnh trên dùng được trong cả PowerShell và shell trên Linux. Không lưu token
-vào repository hoặc nhập token trực tiếp trong tham số dòng lệnh.
+Kết quả lệnh cuối phải là `Times New Roman`.
 
-### Build image local (dành cho maintainer)
+Image đã chứa sẵn Times New Roman hợp lệ. Người sử dụng không cần tải font,
+không cần giải mã archive font và không cần build lại image.
 
-Image chỉ cần build lần đầu, hoặc build lại khi `Dockerfile` hay font thay đổi.
-Format và build tài liệu hằng ngày không rebuild image.
+> Nếu GitHub CLI không có scope `read:packages`, chạy
+> `gh auth refresh --hostname github.com --scopes read:packages` rồi đăng nhập
+> Docker lại.
 
-### Windows (PowerShell)
+## 4. Cài LaTeX Workshop và mở project
 
-Đảm bảo Docker Desktop đang chạy:
-
-```powershell
-docker build --build-arg USER_ID=1000 --build-arg GROUP_ID=1000 -t latex-times-new-roman:latest .
-```
-
-### Linux (Arch-based)
-
-Truyền UID/GID hiện tại để các file PDF do container sinh ra thuộc quyền sở hữu
-của user:
-
-```sh
-docker build \
-  --build-arg USER_ID="$(id -u)" \
-  --build-arg GROUP_ID="$(id -g)" \
-  -t latex-times-new-roman:latest .
-```
-
-Kiểm tra image local đã tồn tại:
-
-```sh
-docker image inspect latex-times-new-roman:latest
-```
-
-## 5. Cấu hình Visual Studio Code
-
-Cài LaTeX Workshop:
+Cài extension bằng terminal:
 
 ```sh
 code --install-extension James-Yu.latex-workshop
-```
-
-Mở project:
-
-```sh
 code .
 ```
 
-Sau đó chạy lệnh `Developer: Reload Window` trong Command Palette. Workspace đã
-có sẵn `.vscode/settings.json` với các hành vi sau:
+Trong VS Code:
 
-- `tex-fmt --nowrap` tự chạy trên host khi lưu file `.tex`;
+1. Nhấn `Ctrl+Shift+P` để mở Command Palette.
+2. Chạy `Developer: Reload Window`.
+3. Mở file `sample/main.tex`.
+
+Workspace đã cấu hình sẵn trong `.vscode/settings.json`:
+
+- LaTeX Workshop dùng image
+  `ghcr.io/tinnguyen0706/latex-times-new-roman:latest`;
 - recipe mặc định là `XeLaTeX via Docker`;
-- Docker chỉ chạy khi build, không chạy khi format;
-- file build được ghi vào thư mục `build/` cạnh file TeX gốc;
-- auto-build bị tắt để tránh build container sau mỗi lần lưu.
+- output được ghi vào thư mục `build/` cạnh file TeX gốc;
+- auto-build bị tắt, nên lưu file không tự chạy container;
+- `tex-fmt --nowrap` chạy trên host khi lưu file `.tex`.
 
-LaTeX Workshop dùng image private trên GHCR. Vì vậy phải chạy `docker login` và
-`docker pull` ở mục 4 trước khi build. Không cần cài TeX Live hoặc LaTeX Workshop
-formatter khác trên host.
-
-## 6. Build và xem tài liệu
-
-### Cách đề xuất: LaTeX Workshop
+## 5. Build và xem PDF bằng VS Code
 
 1. Mở file gốc `sample/main.tex`.
-2. Nhấn `Ctrl+Alt+B`, hoặc chạy `LaTeX Workshop: Build LaTeX project`.
-3. Chạy `LaTeX Workshop: View LaTeX PDF` để xem kết quả.
+2. Nhấn `Ctrl+Alt+B`, hoặc chạy
+   `LaTeX Workshop: Build LaTeX project` trong Command Palette.
+3. Chạy `LaTeX Workshop: View LaTeX PDF` để xem PDF.
 
-PDF được tạo tại:
+Kết quả nằm tại:
 
 ```text
 sample/build/main.pdf
 ```
 
-### Build thủ công trên Windows (PowerShell)
+Format và build là hai thao tác riêng:
+
+- lưu file: `tex-fmt` chạy trực tiếp trên host;
+- nhấn build: LaTeX Workshop khởi động container từ image GHCR;
+- source LaTeX hiện tại được mount vào container để tạo PDF.
+
+## 6. Build thủ công không qua VS Code
+
+### Windows (PowerShell)
 
 ```powershell
 docker run --rm `
   --volume "${PWD}:/workspace" `
   --workdir /workspace/sample `
   ghcr.io/tinnguyen0706/latex-times-new-roman:latest `
-  latexmk -xelatex -interaction=nonstopmode -file-line-error -outdir=build main.tex
+  latexmk -xelatex -interaction=nonstopmode -file-line-error `
+    -outdir=build main.tex
 ```
 
-### Build thủ công trên Linux (Arch-based)
+### Linux (Arch-based)
 
 ```sh
 docker run --rm \
@@ -298,38 +231,54 @@ docker run --rm \
     -outdir=build main.tex
 ```
 
-Để build tài liệu khác, thay `/workspace/sample` bằng thư mục chứa file TeX gốc
+Đối với tài liệu khác, thay `/workspace/sample` bằng thư mục chứa file TeX gốc
 và thay `main.tex` bằng tên file tương ứng.
 
 ## 7. Format mã nguồn
 
-VS Code tự format file `.tex` khi lưu. Có thể format thủ công từ terminal:
+VS Code tự chạy formatter khi lưu file `.tex`. Có thể chạy thủ công:
 
 ```sh
 tex-fmt --nowrap sample/main.tex
 ```
 
-Kiểm tra format mà không sửa file:
+Chỉ kiểm tra format, không sửa file:
 
 ```sh
 tex-fmt --check --nowrap sample/main.tex
 ```
 
-`tex-fmt` cũng hỗ trợ `.bib`, `.cls` và `.sty`. Dùng comment sau nếu cần giữ
-nguyên một đoạn đặc biệt:
+Tắt formatter cho một đoạn đặc biệt:
 
 ```tex
 % tex-fmt: off
-Đoạn này không bị formatter thay đổi.
+Đoạn này được giữ nguyên.
 % tex-fmt: on
 ```
 
-## 8. File build và Git
+## 8. Cập nhật source code và image
 
-Các file trung gian như `.aux`, `.log`, `.xdv`, `.toc` và `.synctex.gz` đã được
-ignore. PDF trong thư mục `build/` vẫn được phép track bằng Git.
+Lấy source mới nhất:
 
-Để dọn file trung gian nhưng giữ PDF, chạy:
+```sh
+git pull --ff-only
+```
+
+Lấy image mới nhất:
+
+```sh
+docker pull ghcr.io/tinnguyen0706/latex-times-new-roman:latest
+```
+
+Sau khi `.vscode/settings.json` thay đổi, chạy lại
+`Developer: Reload Window` trong VS Code.
+
+## 9. File build và Git
+
+Các file trung gian như `.aux`, `.log`, `.xdv`, `.toc` và `.synctex.gz` được
+Git ignore. PDF trong thư mục `build/` vẫn có thể được commit.
+
+Dọn file trung gian nhưng giữ PDF:
 
 ### Windows (PowerShell)
 
@@ -351,79 +300,55 @@ docker run --rm \
   latexmk -c -outdir=build main.tex
 ```
 
-## 9. Publish image lên GHCR
+## 10. Xử lý lỗi thường gặp
 
-Workflow `.github/workflows/publish-image.yml` build image `linux/amd64`, kiểm
-tra font bằng Dockerfile và push lên GHCR bằng `GITHUB_TOKEN`.
+### Không clone được repository
 
-### Thiết lập lần đầu
-
-Repository cần secret `FONT_ARCHIVE_PASSPHRASE` dùng để giải mã
-`fonts/times-new-roman.tar.gz.gpg`. Không in secret hoặc nội dung font ra log.
-Sau lần publish đầu tiên, mở package settings trên GitHub và xác nhận visibility
-vẫn là **Private**.
-
-### Publish một phiên bản
-
-Tag Git theo semantic version rồi push tag:
+Kiểm tra tài khoản và quyền truy cập:
 
 ```sh
-git tag v1.0.0
-git push origin v1.0.0
+gh auth status
+gh repo view tinnguyen0706/latex
 ```
 
-Tag `v1.0.0` tạo các image tag `1.0.0`, `1.0` và `latest`. Có thể vào tab
-**Actions**, chọn workflow **Publish LaTeX image**, rồi chọn **Run workflow** để
-publish thủ công một tag hợp lệ.
+### `unauthorized` hoặc `denied` khi pull GHCR
 
-## 10. Xử lý lỗi thường gặp
+```sh
+gh auth refresh --hostname github.com --scopes read:packages
+gh auth token | docker login ghcr.io -u YOUR_GITHUB_USERNAME --password-stdin
+docker pull ghcr.io/tinnguyen0706/latex-times-new-roman:latest
+```
+
+Tài khoản GitHub cũng phải có quyền đọc package private.
+
+### `permission denied` khi dùng Docker trên Arch Linux
+
+```sh
+sudo systemctl enable --now docker
+sudo usermod -aG docker "$USER"
+```
+
+Sau đó đăng xuất và đăng nhập lại.
 
 ### `Please set your LaTeX formatter in latex-workshop.formatting.latex`
 
-Đảm bảo bạn mở toàn bộ thư mục project thay vì chỉ mở một file `.tex`, sau đó
-chạy `Developer: Reload Window`. Kiểm tra formatter trên host:
+Mở cả thư mục project bằng `code .`, không chỉ mở riêng file `.tex`. Kiểm tra:
 
 ```sh
 tex-fmt --version
 ```
 
-### VS Code không tìm thấy `tex-fmt`
+Sau đó chạy `Developer: Reload Window`.
 
-Khởi động lại VS Code sau khi cài. Trên Windows, kiểm tra
-`%LOCALAPPDATA%\Programs\tex-fmt` có trong biến môi trường `PATH`.
+### VS Code không tìm thấy `tex-fmt` trên Windows
 
-### `permission denied` khi kết nối Docker trên Linux
+Khởi động lại VS Code và kiểm tra `%LOCALAPPDATA%\Programs\tex-fmt` đã nằm trong
+biến môi trường `PATH`.
 
-Kiểm tra daemon và group hiện tại:
-
-```sh
-sudo systemctl status docker
-id
-```
-
-Nếu group `docker` chưa xuất hiện, chạy lại `sudo usermod -aG docker "$USER"`
-rồi đăng xuất và đăng nhập lại.
-
-### Docker build báo font không hợp lệ
-
-Kiểm tra lại đủ bốn file và đúng tên. Font phải là Times New Roman thật; file
-rỗng, file hỏng hoặc font khác được đổi tên đều bị Dockerfile từ chối. Nếu lỗi
-xảy ra trong GitHub Actions, kiểm tra secret `FONT_ARCHIVE_PASSPHRASE` khớp với
-archive mã hóa.
-
-### `unauthorized` hoặc `denied` khi pull GHCR
-
-Chạy lại `docker login ghcr.io -u tinnguyen0706` và dùng PAT classic có scope
-`read:packages`. Tài khoản GitHub đó cũng phải có quyền đọc package private.
-
-### Build không dùng image GHCR mới
-
-Pull lại tag mà LaTeX Workshop đang dùng:
+### Build vẫn dùng image cũ
 
 ```sh
 docker pull ghcr.io/tinnguyen0706/latex-times-new-roman:latest
 ```
 
-Nếu đang phát triển Dockerfile local, dùng lại lệnh đầy đủ ở mục
-**Build image local** và tạm đổi image trong `.vscode/settings.json` về
-`latex-times-new-roman:latest`.
+Sau đó chạy lại `Developer: Reload Window` và build lại tài liệu.

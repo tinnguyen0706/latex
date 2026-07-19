@@ -10,13 +10,13 @@ ENV DEBIAN_FRONTEND=noninteractive \
 
 RUN apt-get update \
     && apt-get install --yes --no-install-recommends \
-        fontconfig \
-        latexmk \
-        texlive-bibtex-extra \
-        texlive-fonts-recommended \
-        texlive-latex-extra \
-        texlive-science \
-        texlive-xetex \
+    fontconfig \
+    latexmk \
+    texlive-bibtex-extra \
+    texlive-fonts-recommended \
+    texlive-latex-extra \
+    texlive-science \
+    texlive-xetex \
     && rm -rf /var/lib/apt/lists/*
 
 COPY fonts/times.ttf fonts/timesbd.ttf fonts/timesbi.ttf fonts/timesi.ttf \
@@ -24,8 +24,8 @@ COPY fonts/times.ttf fonts/timesbd.ttf fonts/timesbi.ttf fonts/timesi.ttf \
 
 RUN set -eu; \
     for font in /usr/local/share/fonts/truetype/times-new-roman/*.ttf; do \
-        fc-scan --format '%{family[0]}\n' "$font" | grep --fixed-strings --line-regexp --quiet 'Times New Roman' \
-            || { echo "Invalid Times New Roman font: $font" >&2; exit 1; }; \
+    fc-scan --format '%{family[0]}\n' "$font" | grep --fixed-strings --line-regexp --quiet 'Times New Roman' \
+    || { echo "Invalid Times New Roman font: $font" >&2; exit 1; }; \
     done; \
     fc-cache --force; \
     test "$(fc-match 'Times New Roman' --format '%{family[0]}')" = 'Times New Roman'
