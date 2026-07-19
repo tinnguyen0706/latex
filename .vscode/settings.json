@@ -2,16 +2,16 @@
     "[latex]": {
         "editor.formatOnPaste": false,
         "editor.suggestSelection": "recentlyUsedByPrefix",
-        "editor.defaultFormatter": "nickfode.latex-formatter",
-        "editor.wordWrap": "on",
+        "editor.wordWrap": "on"
     },
     "workbench.editor.empty.hint": "hidden",
+    "latex-workshop.docker.enabled": true,
+    "latex-workshop.docker.image.latex": "latex-times-new-roman:latest",
     "latex-workshop.latex.recipes": [
         {
-            "name": "latexmk (biber)",
+            "name": "XeLaTeX via Docker",
             "tools": [
-                "latexmk",
-                "latexmk-clean"
+                "latexmk"
             ]
         }
     ],
@@ -20,24 +20,16 @@
             "name": "latexmk",
             "command": "latexmk",
             "args": [
+                "-synctex=1",
                 "-interaction=nonstopmode",
                 "-file-line-error",
                 "-xelatex",
-                "-silent",
-                "%DOC%",
-                "-output-directory=build"
-            ]
-        },
-        {
-            "name": "latexmk-clean",
-            "command": "latexmk",
-            "args": [
-                "-c",
                 "-outdir=build",
                 "%DOC%"
             ]
         }
     ],
+    "latex-workshop.latex.recipe.default": "XeLaTeX via Docker",
     "latex-workshop.latex.outDir": "%DIR%/build",
     "latex-workshop.latex.autoBuild.run": "never"
 }
