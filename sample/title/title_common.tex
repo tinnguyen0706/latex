@@ -19,11 +19,11 @@
     \centering
     \vspace*{-8mm}
 
-    {\fontsize{14}{17}\selectfont\bfseries #1\par}
+    {\large\bfseries #1\par}
     \vspace{2mm}
-    {\fontsize{15}{18}\selectfont\bfseries #2\par}
+    {\Large\bfseries #2\par}
     \vspace{2mm}
-    {\fontsize{12}{15}\selectfont\color{#6} #3\par}
+    {\small\color{#6} #3\par}
 
     \vspace{9mm}
     \includegraphics[height=#5]{#4}
@@ -32,19 +32,19 @@
     {\color{#6}\rule{0.72\textwidth}{1.2pt}\par}
     \vspace{5mm}
 
-    {\fontsize{13}{16}\selectfont\bfseries\color{#6}
+    {\normalsize\bfseries\color{#6}
       \MakeUppercase{\reportname}\par}
     \vspace{4mm}
-    \begin{adjustbox}{max width=0.84\textwidth,
+    \begin{adjustbox}{max width=0.90\textwidth,
                       max totalheight=24mm,center}
-      \begin{minipage}{0.84\textwidth}
+      \begin{minipage}{0.90\textwidth}
         \centering
-        \fontsize{23}{28}\selectfont\bfseries
+        \huge\bfseries
         \reporttitle\par
       \end{minipage}
     \end{adjustbox}\par
     \vspace{5mm}
-    {\fontsize{14}{17}\selectfont\coursename\par}
+    {\large\coursename\par}
 
     \vspace{11mm}
     \begingroup
@@ -53,13 +53,13 @@
         \begin{minipage}{\dimexpr0.78\textwidth-12mm\relax}
           \begin{minipage}[t]{0.34\linewidth}
             \vspace{0pt}
-            {\fontsize{11.5}{14}\selectfont\bfseries\color{#6}
+            {\small\bfseries\color{#6}\raggedright
               Giảng viên hướng dẫn\par}
           \end{minipage}%
           \hfill
           \begin{minipage}[t]{0.60\linewidth}
             \vspace{0pt}
-            {\fontsize{13}{16}\selectfont\raggedright
+            {\normalsize\raggedright
               \teachername\par}
           \end{minipage}
 
@@ -69,13 +69,13 @@
 
           \begin{minipage}[t]{0.34\linewidth}
             \vspace{0pt}
-            {\fontsize{11.5}{14}\selectfont\bfseries\color{#6}
+            {\small\bfseries\color{#6}\raggedright
               Sinh viên thực hiện\par}
           \end{minipage}%
           \hfill
           \begin{minipage}[t]{0.60\linewidth}
             \vspace{0pt}
-            {\fontsize{13}{16}\selectfont\raggedright
+            {\normalsize\raggedright
               \studentname\par}
           \end{minipage}
         \end{minipage}%
@@ -85,6 +85,6 @@
     \vfill
     {\color{#6}\rule{28mm}{0.8pt}\par}
     \vspace{3mm}
-    {\fontsize{12}{15}\selectfont TP. Hồ Chí Minh, \today\par}
+    {\small TP. Hồ Chí Minh, \today\par}
   \end{titlepage}%
 }
