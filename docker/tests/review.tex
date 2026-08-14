@@ -1,0 +1,25 @@
+\documentclass[manuscript,review,anonymous]{acmart}
+
+\title{Minimal ACM CHI Review Smoke Test}
+\author{Anonymous Author}
+
+\begin{document}
+
+\begin{abstract}
+  A minimal anonymous review document.
+\end{abstract}
+
+\maketitle
+
+\makeatletter
+\if@twocolumn
+\PackageError{acm-smoke}{Review layout must be one column}{}%
+\fi
+\makeatother
+
+This citation exercises BibTeX and the ACM bibliography style~\cite{chi}.
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
+
+\end{document}
