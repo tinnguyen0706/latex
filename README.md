@@ -1,8 +1,9 @@
 # LaTeX report template
 
-Project dùng XeLaTeX và Times New Roman để viết báo cáo LaTeX tiếng Việt.
-TeX Live, XeLaTeX và `latexmk` nằm trong Docker image private; máy host chỉ cần
-Docker, Visual Studio Code, LaTeX Workshop và formatter `tex-fmt`.
+Project dùng XeLaTeX và Times New Roman để viết báo cáo LaTeX tiếng Việt. Image
+cũng hỗ trợ class `acmart` 2.19 cho bản review và bản xuất bản ACM CHI. TeX Live,
+XeLaTeX và `latexmk` nằm trong Docker image private; máy host chỉ cần Docker,
+Visual Studio Code, LaTeX Workshop và formatter `tex-fmt`.
 
 ```text
 Source: https://github.com/tinnguyen0706/latex
@@ -153,9 +154,11 @@ Kiểm tra image và font:
 ```sh
 docker image inspect ghcr.io/tinnguyen0706/latex-times-new-roman:latest
 docker run --rm ghcr.io/tinnguyen0706/latex-times-new-roman:latest fc-match "Times New Roman" --format "%{family[0]}\n"
+docker run --rm ghcr.io/tinnguyen0706/latex-times-new-roman:latest kpsewhich acmart.cls
 ```
 
-Kết quả lệnh cuối phải là `Times New Roman`.
+Lệnh `fc-match` phải trả về `Times New Roman`; lệnh `kpsewhich` phải trả về
+đường dẫn đến `acmart.cls`.
 
 Image đã chứa sẵn Times New Roman hợp lệ. Người sử dụng không cần tải font,
 không cần giải mã archive font và không cần build lại image.
@@ -234,7 +237,39 @@ docker run --rm \
 Đối với tài liệu khác, thay `/workspace/sample` bằng thư mục chứa file TeX gốc
 và thay `main.tex` bằng tên file tương ứng.
 
-## 7. Format mã nguồn
+## 7. Viết bài theo layout ACM CHI
+
+Image hỗ trợ hai layout CHI hiện hành bằng XeLaTeX:
+
+- bản nộp review ẩn danh, một cột:
+
+  ```tex
+  \documentclass[manuscript,review,anonymous]{acmart}
+  ```
+
+- bản xuất bản, hai cột:
+
+  ```tex
+  \documentclass[sigconf]{acmart}
+  ```
+
+Build giống các tài liệu khác; thay thư mục và tên file bằng project ACM của
+bạn:
+
+```sh
+docker run --rm \
+  --volume "$PWD:/workspace" \
+  --workdir /workspace/paper \
+  ghcr.io/tinnguyen0706/latex-times-new-roman:latest \
+  latexmk -xelatex -interaction=nonstopmode -file-line-error \
+    -outdir=build main.tex
+```
+
+Bibliography của ACM dùng `ACM-Reference-Format`. Image chỉ cài dependency cần
+cho hai layout trên; các option tùy chọn như `authordraft`, `pbalance=true` và
+layout `sigchi` cũ không được hỗ trợ.
+
+## 8. Format mã nguồn
 
 VS Code tự chạy formatter khi lưu file `.tex`. Có thể chạy thủ công:
 
@@ -256,7 +291,7 @@ Tắt formatter cho một đoạn đặc biệt:
 % tex-fmt: on
 ```
 
-## 8. Cập nhật source code và image
+## 9. Cập nhật source code và image
 
 Lấy source mới nhất:
 
@@ -273,7 +308,7 @@ docker pull ghcr.io/tinnguyen0706/latex-times-new-roman:latest
 Sau khi `.vscode/settings.json` thay đổi, chạy lại
 `Developer: Reload Window` trong VS Code.
 
-## 9. File build và Git
+## 10. File build và Git
 
 Các file trung gian như `.aux`, `.log`, `.xdv`, `.toc` và `.synctex.gz` được
 Git ignore. PDF trong thư mục `build/` vẫn có thể được commit.
@@ -300,7 +335,7 @@ docker run --rm \
   latexmk -c -outdir=build main.tex
 ```
 
-## 10. Xử lý lỗi thường gặp
+## 11. Xử lý lỗi thường gặp
 
 ### Không clone được repository
 

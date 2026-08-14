@@ -1,0 +1,30 @@
+\documentclass[sigconf]{acmart}
+
+\title{Minimal ACM CHI Publication Smoke Test}
+\author{Example Author}
+\affiliation{%
+  \institution{Example University}
+  \country{Vietnam}
+}
+\email{author@example.com}
+
+\begin{document}
+
+\begin{abstract}
+  A minimal two-column publication document.
+\end{abstract}
+
+\maketitle
+
+\makeatletter
+\if@twocolumn\else
+\PackageError{acm-smoke}{SIGCONF layout must be two columns}{}%
+\fi
+\makeatother
+
+This citation exercises BibTeX and the ACM bibliography style~\cite{chi}.
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
+
+\end{document}
